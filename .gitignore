@@ -1,0 +1,14 @@
+# all build files
+build*/**
+
+# vscode
+.vscode/**
+
+# python cache
+__pycache__
+
+# test files
+test*/**
+
+# library binary file
+*.so
