@@ -21,9 +21,9 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License along
- * with Psi4; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Psi4; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  * @END LICENSE
  */
@@ -40,29 +40,33 @@
 
 #include "scf.h"
 
-#include "psi4/psi4-dec.h"
 #include "psi4/liboptions/liboptions.h"
-#include "psi4/libmints/matrix.h"
-#include "psi4/libmints/vector.h"
-#include "psi4/libpsi4util/PsiOutStream.h"
+#include "psi4/libmints/mintshelper.h"
+#include "losc.h"
 
-namespace psi{ namespace psi4_losc {
+namespace psi {
+namespace losc {
 
 /**
  * This function is setting default global options.
  */
-extern "C" PSI_API
-int read_options(std::string name, Options &options)
+extern "C" PSI_API int read_options(std::string name, Options &options)
 {
     /*- LOSC implementation belongs to 'SCF' module in psi4. All
      * the options for LOSC has prefix "LOSC_".
      * The key is case insensitive. -*/
-    if (name == "SCF"|| options.read_globals()) {
+    if (name == "SCF" || options.read_globals()) {
         /*- The amount of information printed
             to the output file -*/
-        options.add_int("losc_print", 1);
+        options.add_int(OPT_PRINT_LEVEL, 1);
         /*- How tightly to converge the localization cost function -*/
-        options.add_double("losc_localize_tolerance", 1.0E-10);
+        options.add_double(OPT_LOCALIZE_CONVERGENCE, 1.0E-10);
+        /*- LOSC curvature_v1 parameter Cx. -*/
+        options.add_double(OPT_CURVATURE_V1_CX, 0.9306526);
+        /*- LOSC curvature_v1 parameter tau. -*/
+        options.add_double(OPT_CURVATURE_V1_TAU, 1.2378);
+        /*- LOSC curvature_v2 parameter zeta. -*/
+        options.add_double(OPT_CURVATURE_V2_ZETA, 8.0);
     }
 
     return true;
@@ -74,9 +78,10 @@ int read_options(std::string name, Options &options)
  *
  * @note
  * The library's name is manually changed into `scf.so`. -*/
-extern "C" PSI_API
-SharedWavefunction scf(SharedWavefunction ref_wfn, Options &options)
+extern "C" PSI_API SharedWavefunction scf(SharedWavefunction ref_wfn,
+                                          Options &options)
 {
 }
 
-}} // End Namespaces
+} // End namespace losc
+} // namespace psi
