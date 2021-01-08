@@ -30,7 +30,7 @@
 
 cmake_minimum_required(VERSION 3.8 FATAL_ERROR)
 
-project(scf CXX)
+project(losc CXX)
 
 find_package(psi4 1.1 REQUIRED)
 
@@ -40,4 +40,4 @@ file(GLOB losc_source
      "src/*.cc"
 )
 
-add_psi4_plugin(scf ${losc_source})
+add_psi4_plugin(losc ${losc_source})
